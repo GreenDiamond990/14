@@ -1,86 +1,53 @@
 using UnityEngine;
 
-
-public class Character
-{
-    private string name;
-    private int health;
-
-   
-    public Character(string name, int health)
-    {
-        this.Name = name;
-        this.Health = health;
-    }
-
-  
-    public string Name
-    {
-        get { return name; }
-        set { name = value; }
-    }
-
-    
-    public int Health
-    {
-        get { return health; }
-        set
-        {
-            if (value < 0)
-                health = 0;
-            else if (value > 100)
-                health = 100;
-            else
-                health = value;
-        }
-    }
-}
-
-
-public class Player : Character
-{
-    
-    public Player(string name, int health) : base(name, health) { }
-
-  
-    public void Heal(int amount)
-    {
-        Health += amount;
-        Debug.Log($"{Name} healed by {amount}. Current Health: {Health}");
-    }
-}
-
-
-public class Enemy : Character
-{
-    
-    public Enemy(string name, int health) : base(name, health) { }
-
-    
-    public void Attack(Character target, int damage)
-    {
-        target.Health -= damage;
-        Debug.Log($"{Name} attacked {target.Name} for {damage} damage. {target.Name}'s Current Health: {target.Health}");
-    }
-}
-
-
 public class GameManager : MonoBehaviour
 {
+    
+    public class Character
+    {
+        public string Name { get; set; }
+        public int Health { get; set; }
+
+        public Character(string name, int health)
+        {
+            Name = name;
+            Health = health;
+        }
+
+        public void Heal(int amount)
+        {
+            Health += amount;
+            Debug.Log($"{Name} healed by {amount}. Current Health: {Health}");
+        }
+    }
+
+    
+    public class Enemy : Character
+    {
+        public Enemy(string name, int health) : base(name, health) { }
+
+        public void Attack(Character target, int damage)
+        {
+            target.Health -= damage;
+            Debug.Log($"{Name} attacked {target.Name} for {damage} damage. {target.Name}'s Health: {target.Health}");
+        }
+    }
+
+   
     void Start()
     {
-        
-        Player player = new Player("Subhi", 100);
-        Enemy enemy = new Enemy("Zarifeh", 100);
+       
+        Character player = new Character("Player", 100);
+        Enemy enemy = new Enemy("Enemy", 50);
 
         
         Debug.Log($"Player: {player.Name}, Health: {player.Health}");
         Debug.Log($"Enemy: {enemy.Name}, Health: {enemy.Health}");
 
-      
+       
         player.Heal(20);
 
-        
+       
         enemy.Attack(player, 30);
     }
 }
